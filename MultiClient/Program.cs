@@ -10,7 +10,7 @@ namespace MultiClient
         private static readonly Socket ClientSocket = new Socket
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-        private const int PORT = 100;
+        private const int PORT = 11203;
 
         static void Main()
         {
@@ -28,10 +28,16 @@ namespace MultiClient
             {
                 try
                 {
+                    string server_ip;
+                    string server_port;
+                    Console.WriteLine("Enter the Server IP address");
+                    server_ip = Console.ReadLine();
+                    Console.WriteLine("Enter the Server Port");
+                    server_port = Console.ReadLine();
                     attempts++;
                     Console.WriteLine("Connection attempt " + attempts);
                     // Change IPAddress.Loopback to a remote IP to connect to a remote host.
-                    ClientSocket.Connect(IPAddress.Loopback, PORT);
+                    ClientSocket.Connect(server_ip, int.Parse(server_port)); //IPAddress.Loopback, PORT);
                 }
                 catch (SocketException) 
                 {
