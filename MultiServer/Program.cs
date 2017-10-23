@@ -11,7 +11,7 @@ namespace MultiServer
         private static readonly Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static readonly List<Socket> clientSockets = new List<Socket>();
         private const int BUFFER_SIZE = 2048;
-        private const int PORT = 100;
+        private const int PORT = 11203;
         private static readonly byte[] buffer = new byte[BUFFER_SIZE];
 
         static void Main()
@@ -29,6 +29,20 @@ namespace MultiServer
             serverSocket.Listen(0);
             serverSocket.BeginAccept(AcceptCallback, null);
             Console.WriteLine("Server setup complete");
+            Console.WriteLine("Server IP Address: " + GetLocalIPAddress() + "\nPort Number: " + PORT);
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
         /// <summary>
